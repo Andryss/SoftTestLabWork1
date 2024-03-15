@@ -37,22 +37,22 @@ public class ApproximatorTest {
     })
     public void giveX_calcSin_success(double x, double expect) {
         double real = approximator.approxSin(x);
+        double realPrecision = approximator.approxSin(x, PRECISION);
+
         assertEquals(expect, real, PRECISION);
+        assertEquals(expect, realPrecision, PRECISION);
     }
 
 
     @DisplayName("Выбрасывается исключение при некорректных параметрах")
     @ParameterizedTest
     @CsvSource({
-            "-3.1415927,  10",
-            " 3.1415927,  10",
-            " 5.0000000,  10",
             " 0.0000000,  -1",
             " 0.0000000,   0",
-            " 0.0000000,  15"
+            " 0.0000000,  -0.00000001"
     })
-    public void giveIllegalParams_throwException(double x, int count) {
-        assertThrows(IllegalArgumentException.class, () -> approximator.approxSin(x, count));
+    public void giveIllegalParams_throwException(double x, double precision) {
+        assertThrows(IllegalArgumentException.class, () -> approximator.approxSin(x, precision));
     }
 
 }

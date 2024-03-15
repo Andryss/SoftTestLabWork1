@@ -44,7 +44,7 @@ class SplayTreeTest {
     }
 
     @Test
-    @DisplayName("Вставка уже существующей вершины не прошла")
+    @DisplayName("Вставка уже существующей вершины вернула пустую вершину")
     public void insert_keyPresent_returnNull() {
         SplayTree tree = new SplayTree();
         tree.insert(10);
@@ -52,6 +52,45 @@ class SplayTreeTest {
         Node node = tree.insert(10);
 
         assertNull(node);
+    }
+
+    @Test
+    @DisplayName("Вставка уже существующей вершины не прошла, дерево не изменилось")
+    public void insert_keyPresent_treeNotChanged() {
+        SplayTree tree = new SplayTree();
+        tree.insert(5);
+        tree.insert(10);
+
+        tree.insert(5);
+
+        Node root = getRoot(tree);
+        assertEquals(10, root.getKey());
+        assertNull(root.getRight());
+        assertEquals(5, root.getLeft().getKey());
+        assertNull(root.getLeft().getLeft());
+        assertNull(root.getLeft().getRight());
+    }
+
+    @Test
+    @DisplayName("Вставка вершины много раз сработала только один")
+    public void repeatableInsert_keyPresent_treeNotChanged() {
+        SplayTree tree = new SplayTree();
+        tree.insert(3);
+        tree.insert(12);
+
+        tree.insert(3);
+        tree.insert(3);
+        tree.insert(3);
+        tree.insert(3);
+        tree.insert(3);
+        tree.insert(3);
+
+        Node root = getRoot(tree);
+        assertEquals(12, root.getKey());
+        assertNull(root.getRight());
+        assertEquals(3, root.getLeft().getKey());
+        assertNull(root.getLeft().getLeft());
+        assertNull(root.getLeft().getRight());
     }
 
     @Test
@@ -97,7 +136,7 @@ class SplayTreeTest {
     }
 
     @Test
-    @DisplayName("Поиск вершины в дереве дереве вернул нужную вершину")
+    @DisplayName("Поиск вершины в дереве вернул нужную вершину")
     public void search_keyPresent_returnNode() {
         SplayTree tree = new SplayTree();
         tree.insert(1);

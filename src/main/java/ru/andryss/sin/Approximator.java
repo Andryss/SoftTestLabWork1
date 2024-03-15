@@ -12,32 +12,30 @@ public class Approximator {
      * @return sin(x)
      */
     public double approxSin(double x) {
-        return approxSin(ranged(x), 10);
+        return approxSin(ranged(x), 1e-6);
     }
 
     /**
      * Calculate sin for given x using decomposition into power series
      * @param x point to calculate sin between -pi and pi
-     * @param count number of terms in decomposition (max 14)
+     * @param precision calculation precision (e.g. 1e-6)
      * @return sin(x)
      */
-    public double approxSin(double x, int count) {
-        if (x < -Math.PI || x > Math.PI) {
-            throw new IllegalArgumentException("X must be in range [-pi;pi]");
-        }
-        if (count <= 0) {
-            throw new IllegalArgumentException("Count must be more than zero");
-        }
-        if (count >= 15) {
-            throw new IllegalArgumentException("Count must be less then 15 (possible precision loss)");
+    public double approxSin(double x, double precision) {
+        x = ranged(x);
+        if (precision <= 0) {
+            throw new IllegalArgumentException("Precision must be more than zero");
         }
         BigDecimal res = ZERO;
-        for (int n = 1; n <= count; n++) {
+        for (int n = 1; n <= 1000; n++) {
             int k = (n << 1) - 1;
             BigDecimal part = valueOf(x).pow(k).divide(factorial(k), DECIMAL128);
             res = res.add(n % 2 == 0 ? part.negate() : part);
+            if (part.abs().doubleValue() < precision) {
+                return res.doubleValue();
+            }
         }
-        return res.doubleValue();
+        throw new ArithmeticException("Precision can't be reached");
     }
 
     /**

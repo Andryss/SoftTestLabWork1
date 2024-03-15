@@ -3,7 +3,6 @@ package ru.andryss.galaxyguide;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
-import java.util.Objects;
 
 import static java.lang.String.join;
 import static java.util.Objects.requireNonNull;

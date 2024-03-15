@@ -28,4 +28,21 @@ class DescriptionTest {
     public void createDescription_invalidCharacteristics_throwException() {
         assertThrows(NullPointerException.class, () -> new Description("a", "a", null));
     }
+
+    @Test
+    @DisplayName("Описание создалось успешно")
+    public void createDescription_validArguments_success() {
+        String originalName = "orig";
+        String descr = "desc";
+        List<String> characteristics = List.of("c1", "c2");
+
+        Description description = new Description(originalName, descr, characteristics);
+
+        assertNotNull(description.originalName());
+        assertEquals(originalName, description.originalName());
+        assertNotNull(description.description());
+        assertEquals(descr, description.description());
+        assertNotNull(description.characteristics());
+        assertEquals(characteristics, description.characteristics());
+    }
 }
